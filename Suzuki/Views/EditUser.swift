@@ -81,7 +81,7 @@ struct EditUser: View {
                     do {
                         try UsersService.updateUser(self.xid, self.fullname, self.emailadd, self.mobileno, self.username, self.password)
                     } catch {
-                        print("error....")
+                        print("Error! Unable to save edited user....")
                         return
                     }
                 }, label: {

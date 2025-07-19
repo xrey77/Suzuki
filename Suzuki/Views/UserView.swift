@@ -8,32 +8,12 @@
 import SwiftUI
 import CoreData
 import PDFKit
-import UniformTypeIdentifiers
-
-//struct TextFile: FileDocument {
-//    static var readableContentTypes = [UTType.pdf]
-//    var pdf = ""
-//    init(initialPdf: String = "") {
-//        pdf = initialPdf
-//    }
-//
-//    init(filewrapper: FileWrapper, contentType: UTType) throws {
-//        if let data = filewrapper.regularFileContents {
-//            pdf = String(decoding: data, as: UTF8.self)
-//        }
-//    }
-//}
-
-struct Item: Hashable, Identifiable {
-    let id = UUID()
-    var text: String
-}
 
 struct UsersView: View {
-
     @Environment(\.managedObjectContext) var manageObjectContext
     @FetchRequest(entity: UsersEntity.entity(), sortDescriptors: [])
         var usersList: FetchedResults<UsersEntity>
+    
     @State var xid = ""
     @State var fullname = ""
     @State var emailadd = ""
@@ -64,12 +44,12 @@ struct UsersView: View {
     
     var body: some View {
       ZStack {
-        Color.yellow.ignoresSafeArea()
-        .navigationTitle("User's Data")
-            
+            Color.yellow.ignoresSafeArea()
             VStack {
                 SearchBar(text: $searchText) //SearchBar
                     .offset(x: 0, y: -30)
+                GeometryReader { geom in
+                ScrollView {
                 List {
                     ForEach(usersList.filter {searchText.isEmpty ? true : $0.fullname!.localizedCaseInsensitiveContains(searchText)}) { item in
                       HStack {
@@ -78,29 +58,35 @@ struct UsersView: View {
                             .foregroundColor(.black)
 
                       }.onTapGesture {
-                        self.showEdituser = true
-                        self.xid = item.idno!
-                        self.fullname = item.fullname!
-                        self.emailadd = item.emailadd!
-                        self.mobileno = item.mobileno!
-                        self.username = item.username!
-                        self.password = item.password!
+                        DispatchQueue.main.async {
+                            showEdituser = true
+                            xid = "\(item.idno!)"
+                            fullname = "\(item.fullname!)"
+                            emailadd = "\(item.emailadd!)"
+                            mobileno = "\(item.mobileno!)"
+                            username = "\(item.username!)"
+                            password = "\(item.password!)"
+                        }
                       }
-                      .ignoresSafeArea()
                       .fullScreenCover(isPresented: $showEdituser, content: {
-                        EditUser(xid: self.$xid, showEdituser: self.$showEdituser, fullname: self.$fullname, emailadd: self.$emailadd, mobileno: self.$mobileno, username: self.$username, password: self.$password)
-                              .background(BackgroundClearView())
+                        return EditUser(xid: $xid, showEdituser: $showEdituser, fullname: $fullname, emailadd: $emailadd, mobileno: $mobileno, username: $username, password: $password).background(BackgroundClearView())
                       })
 
                     }
                     .onDelete(perform: deleteUser)
-                }
-                .offset(x: 0, y: -30)
+                } ///End-List
+                .frame(height: geom.size.height + 300)
+                } ///End-ScrollView
+                .offset(x: 0.0, y: -30.0)
+                
 
+                } ///GeometryReader
             }
             .frame(width: 400, height: 650, alignment: .center)
             .toolbar {
                 HStack(spacing: 20) {
+
+                    
                         //PDF VIEWER
                         Button {
                             self.clickUser = 0
@@ -110,8 +96,6 @@ struct UsersView: View {
                                 let fileURL = savePDF(data: pdfData, fileName: "UsersList")
                                 print(fileURL! as Any)
                             }
-
-                            
                         } label: {
 
                             Image(systemName: "doc.text.magnifyingglass")
@@ -119,49 +103,41 @@ struct UsersView: View {
                                 .frame(width: 30, height: 30)
                                 .foregroundColor(.white)
                         }
-                        .fullScreenCover(isPresented: $showPdf1, content: {
-
+                        .fullScreenCover(isPresented: $showPdf1) {
 //                            PdfViewPicker(showImagePicker: $showImagePicker)
 //                                .background(BackgroundClearView())
 //
                             PdfPreview(showPdf1: $showPdf1, url: $url)
                                 .ignoresSafeArea()
-                        })
+                        }
 
                         //ADD NEW USER
-                        VStack {
-                        Button {
-                            self.clickUser = 2
-                            self.shownewUser.toggle()
-                            self.isPresented = true
-                        } label: {
-                            VStack {
-                            Image(systemName: "plus")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(.white)
-                            }
-                            .ignoresSafeArea()
-                            .fullScreenCover(isPresented: $isPresented, content: {
-                                NewUser(isPresented: $isPresented)
-                                    .background(BackgroundClearView())
-                            })
-                            
+                            Button {
+                                DispatchQueue.main.async {
+                                    shownewUser = true
+                                }
+                            } label: {
+                                VStack {
+                                    Image(systemName: "plus")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(.white)
+                                }
+                            }///End-Button
+                    
+                    }///End-HStack
 
-                        }
-                            
-                    } //HStack
-                }// if
-            }
-        
-        
-      } //ZStack
-      .background(Color.yellow)
-    }
+                } //End-toolbar
+                .fullScreenCover(isPresented: $shownewUser) {
+                    NewUser(shownewUser: $shownewUser)
+                        .ignoresSafeArea()
+                        .background(BackgroundClearView())
+                }
+
+            }///ZStack
+      } ///some View
     
-    
-    
-    private func deleteUser(at indexSet: IndexSet) {
+     func deleteUser(at indexSet: IndexSet) {
         do {
         try indexSet.forEach{ index in
             let userindex = usersList[index]
@@ -182,26 +158,28 @@ struct UsersView: View {
             return view
         }
 
-        func updateUIView(_ uiView: UIView, context: Context) {}
+        func updateUIView(_ uiView: UIView, context: Context) {
+            // Update pdf view if needed
+        }
     }
     
 ///PDFKIT FUNCTIONALITIES
-    struct PDFContentView: View {
-        @Environment(\.managedObjectContext) var manageObjectContext
-        @FetchRequest(entity: UsersEntity.entity(), sortDescriptors: [])
-            var usersList: FetchedResults<UsersEntity>
-
-        var body: some View {
-            ScrollView{
-                ForEach(usersList) { item in
-                  HStack {
-                    Text("\(item.fullname ?? "Unknown")")
-                  }
-            }
-            .padding()
-        }
-     }
-    }
+//    struct PDFContentView: View {
+//        @Environment(\.managedObjectContext) var manageObjectContext
+//        @FetchRequest(entity: UsersEntity.entity(), sortDescriptors: [])
+//            var usersList: FetchedResults<UsersEntity>
+//
+//        var body: some View {
+//            ScrollView{
+//                ForEach(usersList) { item in
+//                  HStack {
+//                    Text("\(item.fullname ?? "Unknown")")
+//                  }
+//            }
+//            .padding()
+//        }
+//     }
+//    }
 
     func getDate() -> String {
         let dateFormatter = DateFormatter()
@@ -213,7 +191,7 @@ struct UsersView: View {
     }
 
     
-        func generatePDF() -> Data? {
+    func generatePDF() -> Data? {
             var ln: Int = 1
             pdf1 = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
@@ -296,37 +274,36 @@ struct UsersView: View {
             }
         }
         
-    func convertToPdfFileAndShare(textMessage: String) -> URL {
+        func convertToPdfFileAndShare(textMessage: String) -> URL {
+            let heading = UIMarkupTextPrintFormatter(markupText: textMessage.uppercased())
+            let render = UIPrintPageRenderer()
+            render.addPrintFormatter(heading, startingAtPageAt: 0)
 
-        let heading = UIMarkupTextPrintFormatter(markupText: textMessage.uppercased())
-        let render = UIPrintPageRenderer()
-        render.addPrintFormatter(heading, startingAtPageAt: 0)
+            let page = CGRect(x:0, y:0, width: 595.2, height: 841.8)
+            render.setValue(page, forKey: "paperRect")
+            render.setValue(page, forKey: "printableRect")
 
-        let page = CGRect(x:0, y:0, width: 595.2, height: 841.8)
-        render.setValue(page, forKey: "paperRect")
-        render.setValue(page, forKey: "printableRect")
+            let pdfData = NSMutableData()
 
-        let pdfData = NSMutableData()
+            UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
 
-        UIGraphicsBeginPDFContextToData(pdfData, .zero, nil)
+            for i in 0..<render.numberOfPages {
+                UIGraphicsBeginPDFPage();
+                render.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
+            }
 
-        for i in 0..<render.numberOfPages {
-            UIGraphicsBeginPDFPage();
-            render.drawPage(at: i, in: UIGraphicsGetPDFContextBounds())
+            UIGraphicsEndPDFContext();
+                    
+            guard let outputUrl = try? FileManager.default.url(for: .documentDirectory,
+                                                               in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("output")
+                .appendingPathExtension("pdf") else { fatalError("Destination URL not created.") }
+
+            
+            
+            pdfData.write(to: outputUrl, atomically: true)
+            return outputUrl
+
         }
-
-        UIGraphicsEndPDFContext();
-                
-        guard let outputUrl = try? FileManager.default.url(for: .documentDirectory,
-                                                           in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("output")
-            .appendingPathExtension("pdf") else { fatalError("Destination URL not created.") }
-
-        
-        
-        pdfData.write(to: outputUrl, atomically: true)
-        return outputUrl
-
-    }
 
     
     
@@ -337,7 +314,10 @@ struct UsersView_Previews: PreviewProvider {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         UsersView()
             .environment(\.managedObjectContext, context)
-            .previewDevice("iPhone 11 Pro Max")
+            .previewDevice("iPhone 14.4 Pro Max")
         
     }
 }
+
+
+

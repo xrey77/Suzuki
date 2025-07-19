@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import CoreData
 import UIKit
 
@@ -17,20 +16,24 @@ class UsersService {
     static func save() throws {
         try viewContext.save()
     }
-    
+        
     static func saveUser(_ fullname: String, _ emailadd: String, _ mobileno: String, _ username: String, _ password: String) throws {
-        let users = UsersEntity(context: viewContext)
-        let id = UUID()
-        users.idno = id.uuidString
-        users.fullname = fullname
-        users.emailadd = emailadd
-        users.mobileno = mobileno
-        users.username = username
-        users.password = password
-        users.role = "User"
-        users.createdAt = Date()
-        users.updatedAt = Date()
-        try save()
+        do {
+            let users = UsersEntity(context: viewContext)
+            let id = UUID()
+            users.idno = id.uuidString
+            users.fullname = fullname
+            users.emailadd = emailadd
+            users.mobileno = mobileno
+            users.username = username
+            users.password = password
+            users.role = "User"
+            users.createdAt = Date()
+            users.updatedAt = Date()
+            try viewContext.save()
+        } catch {
+            print("Error! Unable to save user.")
+        }
     }
     
     static func updateUser(_ idno: String, _ fullname: String, _ emailadd: String, _ mobileno:       String, _ username: String, _ password: String) throws {

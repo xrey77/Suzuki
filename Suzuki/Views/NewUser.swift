@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct NewUser: View {
-    @Binding var isPresented: Bool
-    @State private var showNewuser = true
+    @Binding var shownewUser: Bool
+                
     @State private var showingAlert = false
     @State private var fullname = ""
     @State private var emailadd = ""
@@ -17,22 +17,20 @@ struct NewUser: View {
     @State private var username = ""
     @State private var password = ""
     var body: some View {
+        if shownewUser == true {
             VStack{
-                if self.showNewuser == true {
-                    ZStack {
+              ZStack {
                 VStack {
                     HStack {
                         Text("Add User        ")
                             .foregroundColor(.white)
                             .font(.title)
-
                         Image(systemName: "xmark.rectangle")
                             .resizable()
                             .frame(width: 25, height: 25, alignment: .topTrailing)
                             .foregroundColor(.white)
                             .onTapGesture {
-                                self.showNewuser = false
-                                isPresented = false
+                                shownewUser = false
                             }
                     }
                     .offset(x: 50, y: 0)
@@ -71,7 +69,7 @@ struct NewUser: View {
                             .background(Color.white)
                             .cornerRadius(10)
 
-                        TextField("Password", text: $password)
+                        SecureField("Password", text: $password)
                             .autocapitalization(.none)
                             .padding()
                             .frame(width: 250, height: 50)
@@ -102,10 +100,9 @@ struct NewUser: View {
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.blue, lineWidth: 5)
                 )
-                    } //ZStack
-                    .ignoresSafeArea()
+               } //ZStack
 
-                }//if
+              }//if
             }
 
     }
