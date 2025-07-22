@@ -9,13 +9,13 @@ import SwiftUI
 import CoreData
 import PDFKit
 
-struct PdfPreview: View {
-    @Binding var showPdf1: Bool
+struct PreviewPdf: View {
+    @Binding var showPdf2: Bool
     @Binding var url: URL!
-     
+    
     var body: some View {
-        if showPdf1 == true {
-        NavigationView {
+        if showPdf2 == true {
+         NavigationView {
             ZStack {
                 VStack {
                     VStack {
@@ -26,7 +26,7 @@ struct PdfPreview: View {
                     HStack(spacing: 300) {
                         ///BACK BUTTON
                         Button {
-                            showPdf1 = false
+                            showPdf2 = false
                         } label: {
                             Image("back")
                                 .resizable()
@@ -60,9 +60,10 @@ struct PdfPreview: View {
             } //End-ZStack
             .offset(x: 0, y: -20)
 
-        } //End-NavigationView
+         } //End-NavigationView
         } //End-if
 
     }
 }
+
 

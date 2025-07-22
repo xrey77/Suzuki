@@ -5,32 +5,63 @@
 //  Created by Reynald Marquez-Gragasin on 7/14/25.
 //
 
+import Combine
 import SwiftUI
+import PDFKit
 
 struct PdfViewPicker: View {
     @Binding var showImagePicker: Bool
-    @State private var image: Image?
-    @State private var inputImage: UIImage?
-    @State private var close: Bool = true
+    @State var image: Image?
+    @State var inputImage: UIImage?
+    @State var close = true
+    @State var url: URL!
+    @State var showPdf1 = true
+    
+    func createPDFDataFromImage(image: UIImage) {
+        let pdfData = NSMutableData()
+        
+        let imgView = UIImageView.init(image: image)
+        let imageRect = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+        UIGraphicsBeginPDFContextToData(pdfData, imageRect, nil)
+        UIGraphicsBeginPDFPage()
+        let context = UIGraphicsGetCurrentContext()
+        imgView.layer.render(in: context!)
+        UIGraphicsEndPDFContext()
+
+        //try saving in doc dir to confirm:
+        let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
+        let path = dir?.appendingPathComponent("file.pdf")
+        do {
+                try pdfData.write(to: path!, options: NSData.WritingOptions.atomic)
+        } catch {
+            print("error catched")
+        }
+        url = path!.absoluteURL
+
+    }
+
     
     private func loadImage() {
         guard let inputImage = inputImage else { return }
         image = Image(uiImage: inputImage)
+        createPDFDataFromImage(image: inputImage)
     }
     
     var body: some View {
-        if self.close {
         NavigationView {
+            if showImagePicker {
             ZStack {
                 VStack {
                     if image != nil {
-                        image?
-                            .resizable()
-                            .scaledToFill()
+                        PdfPreview(showPdf1: $showPdf1, url: $url)
+
+//                        image?
+//                            .resizable()
+//                            .scaledToFill()
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .sheet(isPresented: $showImagePicker, onDismiss: loadImage ) {
+                .fullScreenCover(isPresented: $close, onDismiss: loadImage) {
                     ImagePicker(image: self.$inputImage)
                 }
                 .offset(x: 0, y: -20)
@@ -40,25 +71,21 @@ struct PdfViewPicker: View {
                  HStack(spacing: 280) {
                     Image("back").resizable().frame(width: 70, height: 25)
                         .onTapGesture {
-                            self.showImagePicker = false
-                            self.close = false
+                            showImagePicker = false
                         }
-                    Image("empty").resizable().frame(width: 20, height: 20)
+                    Image(systemName: "printer.fill").resizable()
+                        .foregroundColor(Color.black)
+                        .frame(width: 25, height: 25)
+                        .onTapGesture {
+                        }
                 }
             })
 
             } ///End-ZStack
-            .ignoresSafeArea()
-
-            
+        } ///End-if
      } ///End-NavigationView
-
-    }  ///End-if
     
-
-
-    
-    }
+}
 
 
 //struct PdfViewPicker_Previews: PreviewProvider {

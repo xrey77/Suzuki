@@ -27,6 +27,7 @@ struct ImagePicker: UIViewControllerRepresentable {
                             if let uiImage = info[.originalImage] as? UIImage {
                                 parent.image = uiImage
                             }
+
                             parent.presentationMode.wrappedValue.dismiss()
                         }
     }
@@ -39,12 +40,14 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
-        let picker = UIImagePickerController()
+        let picker = UIImagePickerController()    
         picker.delegate = context.coordinator
         return picker;
     }
     
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
-        
     }
+    
+
+    
 }

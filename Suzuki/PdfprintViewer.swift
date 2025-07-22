@@ -12,19 +12,42 @@ import PDFKit
 struct PDFKitRepresentedView: UIViewRepresentable {
     let url: URL
     let pdfView = PDFView()
-
+    let filePath: String
+    public var totalCount = Int()
+    
     init(_ url: URL) {
         self.url = url
+        self.filePath = url.path
+        
+        pdfView.document = getDocument(path: filePath)
+        if let total = pdfView.document?.pageCount {
+            totalCount = total
+        }
+        pdfView.autoScales = true
+        pdfView.displayMode = .singlePageContinuous
+        pdfView.usePageViewController(true, withViewOptions: nil)
+        pdfView.displayDirection = .vertical
+        pdfView.pageBreakMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        pdfView.displaysPageBreaks = true
         pdfView.document = PDFDocument(url: self.url)
     }
 
     func makeUIView(context: UIViewRepresentableContext<PDFKitRepresentedView>) -> PDFKitRepresentedView.UIViewType {
+        
+        
         return pdfView
     }
 
     func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<PDFKitRepresentedView>) {
         // Update the PDF view if needed
     }
+    
+    func getDocument(path: String) -> PDFDocument? {
+        let pdfURL = URL(fileURLWithPath: filePath)
+        let document = PDFDocument(url: pdfURL)
+        return document
+    }
+
 }
 
 struct PDFKitView: View {

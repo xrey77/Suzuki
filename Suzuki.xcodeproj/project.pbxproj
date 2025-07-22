@@ -22,6 +22,8 @@
 		A142698C2E24D7C000C9DFEA /* PdfViewPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A142698B2E24D7C000C9DFEA /* PdfViewPicker.swift */; };
 		A1549DCA2E1FDE6F005FDE0A /* UsersEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1549DC82E1FDE6F005FDE0A /* UsersEntity+CoreDataClass.swift */; };
 		A1549DCB2E1FDE6F005FDE0A /* UsersEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1549DC92E1FDE6F005FDE0A /* UsersEntity+CoreDataProperties.swift */; };
+		A1C8D3012E2C9D0000CAEA33 /* PreviewPdf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C8D3002E2C9D0000CAEA33 /* PreviewPdf.swift */; };
+		A1C8D3062E2CBACF00CAEA33 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C8D3052E2CBACF00CAEA33 /* DocumentPicker.swift */; };
 		A1F2C1352E20F46600D4C5DC /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2C1342E20F46600D4C5DC /* SearchBar.swift */; };
 		A1F2C1382E21298000D4C5DC /* PdfprintViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2C1372E21298000D4C5DC /* PdfprintViewer.swift */; };
 		A1F2C13B2E2229BC00D4C5DC /* PdfPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2C13A2E2229BC00D4C5DC /* PdfPreview.swift */; };
@@ -47,6 +49,8 @@
 		A142698B2E24D7C000C9DFEA /* PdfViewPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfViewPicker.swift; sourceTree = "<group>"; };
 		A1549DC82E1FDE6F005FDE0A /* UsersEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UsersEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A1549DC92E1FDE6F005FDE0A /* UsersEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UsersEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A1C8D3002E2C9D0000CAEA33 /* PreviewPdf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPdf.swift; sourceTree = "<group>"; };
+		A1C8D3052E2CBACF00CAEA33 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		A1F2C1342E20F46600D4C5DC /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		A1F2C1372E21298000D4C5DC /* PdfprintViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfprintViewer.swift; sourceTree = "<group>"; };
 		A1F2C13A2E2229BC00D4C5DC /* PdfPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfPreview.swift; sourceTree = "<group>"; };
@@ -99,6 +103,7 @@
 				A1F2C1342E20F46600D4C5DC /* SearchBar.swift */,
 				A1F2C1372E21298000D4C5DC /* PdfprintViewer.swift */,
 				A14269882E24C26200C9DFEA /* ImagePicker.swift */,
+				A1C8D3052E2CBACF00CAEA33 /* DocumentPicker.swift */,
 			);
 			path = Suzuki;
 			sourceTree = "<group>";
@@ -121,6 +126,7 @@
 				A1F2C1432E225C5800D4C5DC /* EditUser.swift */,
 				A142698B2E24D7C000C9DFEA /* PdfViewPicker.swift */,
 				A13E6EDF2E24FDBA009FA1BA /* BottomSheetView.swift */,
+				A1C8D3002E2C9D0000CAEA33 /* PreviewPdf.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,9 +219,11 @@
 			files = (
 				A1F2C1442E225C5800D4C5DC /* EditUser.swift in Sources */,
 				A1549DCA2E1FDE6F005FDE0A /* UsersEntity+CoreDataClass.swift in Sources */,
+				A1C8D3062E2CBACF00CAEA33 /* DocumentPicker.swift in Sources */,
 				A1549DCB2E1FDE6F005FDE0A /* UsersEntity+CoreDataProperties.swift in Sources */,
 				A14269892E24C26200C9DFEA /* ImagePicker.swift in Sources */,
 				A11057A62E1E723B00C71701 /* UsersService.swift in Sources */,
+				A1C8D3012E2C9D0000CAEA33 /* PreviewPdf.swift in Sources */,
 				A1F2C1412E22481000D4C5DC /* NewUser.swift in Sources */,
 				A1F2C13B2E2229BC00D4C5DC /* PdfPreview.swift in Sources */,
 				A142698C2E24D7C000C9DFEA /* PdfViewPicker.swift in Sources */,
