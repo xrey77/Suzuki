@@ -11,7 +11,7 @@ Features:
 
 1. Add data
 2. Edit/Update data
-3. Delele all data
+3. Swipe right Delete
 4. Search and Delete single data
 5. Search / Update Data
 6. Fetch all records
