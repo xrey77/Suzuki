@@ -1,4 +1,6 @@
-XCODE 12.4 SwiftUI 2.0 Core-Data implementation
+XCODE 12.4 SwiftUI 2.0 Core-Data Start-up Project
+
+IOS Deployment target : IOS 14.4
 
 1. SWIFTUI
 2. PDFKit
@@ -15,5 +17,7 @@ Features:
 6. Fetch all records
 7. Create pdf report print preview (PDFKit)
 8. Send pdf to printer
-9. UISearchBar implementation
-10. UIScrollView implementation
+9. UIDocumentPickerViewController implementation
+10. UIImagePickerController implementation
+11. UISearchBar implementation
+12. UIScrollView implementation

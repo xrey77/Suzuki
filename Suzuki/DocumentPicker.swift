@@ -32,7 +32,7 @@ struct DocumentPicker : UIViewControllerRepresentable {
     }
 
     public func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        let supportedTypes = [UTType.pdf, UTType.jpeg, UTType.png]
+        let supportedTypes = [UTType.pdf]
         let picker = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes)
         picker.delegate = context.coordinator
         picker.allowsMultipleSelection = self.allowMultipleSelections
@@ -49,22 +49,6 @@ struct DocumentPicker : UIViewControllerRepresentable {
             self.onCancel = onCancel
         }
         
-//        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-//            guard let url = urls.first, url.startAccessingSecurityScopedResource() else { return }
-//            defer {
-//                DispatchQueue.main.async {
-//                    url.stopAccessingSecurityScopedResource()
-//                }
-//            }
-//
-//            do {
-//                parent.s3Document = try Data(contentsOf: url)
-//            } catch {
-//                print("no data")
-//            }
-//        }
-
-        
         public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let url = urls.first, url.startAccessingSecurityScopedResource() else { return }
             defer {
@@ -73,7 +57,6 @@ struct DocumentPicker : UIViewControllerRepresentable {
                 }
             }
 
-            
             self.onPicked(urls)
         }
 
@@ -83,37 +66,3 @@ struct DocumentPicker : UIViewControllerRepresentable {
 
     }
 }
-    
-//    var callback: (URL) -> ()
-//
-//        func makeCoordinator() -> Coordinator {
-//            return Coordinator(documentController: self)
-//        }
-//
-//        func updateUIViewController(
-//            _ uiViewController: UIDocumentPickerViewController,
-//            context: UIViewControllerRepresentableContext<DocumentPicker>) {
-//        }
-//
-//        func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-//            let supportedTypes = [UTType.pdf, UTType.jpeg, UTType.png]
-//            let controller = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes)
-//
-//            controller.delegate = context.coordinator
-//            return controller
-//        }
-//
-//        class Coordinator: NSObject, UIDocumentPickerDelegate {
-//            var documentController: DocumentPicker
-//
-//            init(documentController: DocumentPicker) {
-//                self.documentController = documentController
-//            }
-//
-//            func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-//                guard let url = urls.first, url.startAccessingSecurityScopedResource() else { return }
-//                defer { url.stopAccessingSecurityScopedResource() }
-//                documentController.callback(urls[0])
-//            }
-//        }
-//    }

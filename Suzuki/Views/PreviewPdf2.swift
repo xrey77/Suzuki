@@ -1,22 +1,23 @@
 //
-//  PdfPreview.swift
+//  PreviewPdf2.swift
 //  Suzuki
 //
-//  Created by Reynald Marquez-Gragasin on 7/12/25.
+//  Created by Reynald Marquez-Gragasin on 7/22/25.
 //
-
 import SwiftUI
-import CoreData
+import CoreAudio
 import PDFKit
 
-struct PreviewPdf: View {
-    @Binding var showPdf2: Bool
+struct PreviewPdf2: View {
+//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Binding var showPdf3: Bool
     @Binding var url: URL!
     
     var body: some View {
-        if showPdf2 == true {
+        if self.showPdf3 == true {
          NavigationView {
             ZStack {
+
                 VStack {
                     VStack {
                         PDFKitRepresentedView(url)
@@ -26,7 +27,8 @@ struct PreviewPdf: View {
                     HStack(spacing: 300) {
                         ///BACK BUTTON
                         Button {
-                            showPdf2 = false
+//                            presentationMode.wrappedValue.dismiss()
+                            self.showPdf3 = false
                         } label: {
                             Image("back")
                                 .resizable()
@@ -65,4 +67,5 @@ struct PreviewPdf: View {
 
     }
 }
+
 
